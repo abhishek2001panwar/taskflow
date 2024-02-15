@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Dashboard</title>
+    <script src="https://unpkg.com/gsap@3.9.0/dist/gsap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300&family=Roboto:wght@300&family=Satisfy&display=swap" rel="stylesheet">    <!-- <link rel="stylesheet" href="/stylesheets/style.css" /> -->
+
+    <link rel="stylesheet" href="/stylesheets/style.css"> <!-- Link to your stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Add your icon library CSS link (for example, Remix Icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Dancing Script', cursive;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #4b90d4;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        header p {
+            margin-top: 5px;
+        }
+
+        /* Add your styles for the Task List, Task Details, Create Task, Edit Task sections here */
+
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 50px;
+            background-color: #fdfdfd;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            gap: 10px;
+            font-family: 'Satisfy', cursive;
+
+        }
+
+
+         h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #3498db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+
+        }
+        h5{
+          color: #3498db;
+        }
+        .card {
+
+        width: 18rem;
+        overflow-y: auto; /* Add scrollbar for overflow */
+        max-height: 200px; /* Set a fixed height for each card */
+    }
+    .navbar-brand {
+        transition: transform 0.3s ease-in-out; /* Add a transition for a smooth effect */
+      }
+
+      .navbar-brand:hover {
+        transform: scale(1.1); /* Adjust the scaling factor as needed */
+      }
+      @keyframes enlargeOnHover {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1.1);
+        }
+      }
+      .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .animate-on-scroll.show {
+            opacity: 10;
+            transform: translateY(0);
+        }
+        #anchor:hover{
+          background-color: #3498db;
+          color: rgb(26, 22, 22);
+        }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        TaskFlow <i class="ri-task-fill"></i>
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active border-bottom border-2 border-primary" href="/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Addtask">Add Task</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <h2 class="animate-on-scroll" id="dailyTasks">Daily Tasks</h2>
+  <div class="dashboard-container d-flex flex-wrap">
+
+  <% user.posts.forEach(function(post){ %>
+<div class="card" id="<%= post._id %>" class="animate-on-scroll" style="width: 18rem;"> 
+    <div class="card-body">
+        <h5 class="card-title fw-bolder"><%= post.title %></h5>
+        <p class="card-text"><%= post.description %></p>
+        <form action="/delete" method="post">
+            <input type="hidden" name="_method" value="Delete"> <!-- Using hidden input for method override -->
+            <button type="submit" class="delete-btn py-1 btn-sm bg-light text-black border-0">Delete</button>
+        </form>
+        <a id="anchor" href="/archived_tasks" class="btn py-1 btn-sm bg-light text-black border-0">Save</a>
+        <!-- Other buttons -->
+        <a href="#" class="btn py-1 btn-sm bg-light text-black border-0"><%= post.date.toLocaleDateString() %></a>
+        <a href="#" class="btn py-1 btn-sm bg-light text-black border-0"><%= post.priority %></a>
+    </div>
+</div>
+
+      <% }) %> 
+
+
+   
+         
+</div>
+
+
+<!-- Include necessary scripts and footer -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+<script>
+  // Add a scroll-triggered animation
+  gsap.to("#dailyTasks", {
+      scrollTrigger: {
+          trigger: "#dailyTasks",
+          start: "top 80%", // Adjust as needed
+          end: "top 50%", // Adjust as needed
+          scrub: 1, // Smooth animation during scroll
+      },
+      className: "show", // Adds the "show" class to trigger the CSS animation
+  });
+ // Assuming you're using vanilla JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.delete-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            var card = this.closest('.card');
+            fetch('/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove the HTML element representing the deleted task from the DOM
+                if (data.deletedPostId) {
+                    var deletedCard = document.getElementById(data.deletedPostId);
+                    if (deletedCard) {
+                        deletedCard.remove();
+                    }
+                }
+                alert(data.message); // Optionally, show a success message
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Error deleting task'); // Show an error message if deletion fails
+            });
+        });
+    });
+});
+
+</script>
+
+</body>
+</html>
